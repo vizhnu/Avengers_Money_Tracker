@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "165137659016",
+    "firebase_url": "https://flutter-avengers-wallet.firebaseio.com",
+    "project_id": "flutter-avengers-wallet",
+    "storage_bucket": "flutter-avengers-wallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165137659016:android:adbd8feb7e813e95031b3d",
+        "android_client_info": {
+          "package_name": "com.sreeram.example.avengers_money_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165137659016-9c0ftps9ognescevlh6qsonjat59vd49.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClwJqftIbMsi0U32eug3VQohdMY9ENl98"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165137659016-9c0ftps9ognescevlh6qsonjat59vd49.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
