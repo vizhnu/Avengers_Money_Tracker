@@ -95,7 +95,15 @@ class PersonCardState extends State<PersonCard> {
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontWeight: FontWeight.bold),
-
+                      onChanged:(text){
+                        Firestore.instance.runTransaction((transaction) async{
+                          DocumentSnapshot freshSnap =
+                                await transaction.get(snapshot.data.document.reference);
+                           await transaction.update(freshSnap.reference,{
+                             'votes':int.parse(text),
+                           });
+                        });
+                      },
                     ),
                   ))
             ],
