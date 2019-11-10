@@ -12,12 +12,7 @@ class MyApp extends StatelessWidget {
         // and backgrounds default to dark
         debugShowCheckedModeBanner: false,
         theme: ThemeData(brightness: Brightness.dark),
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text('Avengers Money Tracker'),
-              backgroundColor: Colors.blueGrey,
-            ),
-            body: new HomePage()));
+        home: new HomePage());
   }
 }
 
@@ -29,31 +24,36 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        PersonCard(),
-        PersonCard(),
-        PersonCard(),
-        SizedBox(
-          height: 35,
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Avengers Money Tracker'),
+          backgroundColor: Colors.blueGrey,
         ),
-        PersonCard(),
-        PersonCard(),
-        PersonCard(),
-        SizedBox(
-          height: 35,
-        ),
-        PersonCard(),
-        PersonCard(),
-        PersonCard(),
-        SizedBox(
-          height: 35,
-        ),
-        PersonCard(),
-        PersonCard(),
-        PersonCard(),
-      ],
-    );
+        body: ListView(
+          children: <Widget>[
+            PersonCard(10),
+            PersonCard(11),
+            PersonCard(1),
+            SizedBox(
+              height: 35,
+            ),
+            PersonCard(6),
+            PersonCard(8),
+            PersonCard(5),
+            SizedBox(
+              height: 35,
+            ),
+            PersonCard(3),
+            PersonCard(4),
+            PersonCard(0),
+            SizedBox(
+              height: 35,
+            ),
+            PersonCard(7),
+            PersonCard(2),
+            PersonCard(9),
+          ],
+        ));
   }
 }
 
@@ -62,14 +62,12 @@ class _HomePageState extends State<HomePage> {
 //}
 
 class PersonCard extends StatefulWidget {
-//  final String text;
-//
-//  PersonCard(this.text);
+  final int index;
+
+  PersonCard(this.index);
   @override
   PersonCardState createState() => new PersonCardState();
 }
-
-
 
 class PersonCardState extends State<PersonCard> {
   int cash = 0;
@@ -78,30 +76,32 @@ class PersonCardState extends State<PersonCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 30, left: 20, bottom: 30),
-              child: Text(
-                "hello",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(right: 30),
-                child: SizedBox(
-                  width: 100,
-                  child: TextFormField(
-                    initialValue: '0',
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.number,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ))
-          ],
-        ),
-      ),
+          child: StreamBuilder(
+        stream: Firestore.instance.collection('cashtogive').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Text('Loading..');
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(top: 30, left: 20, bottom: 30),
+                  child: Text(snapshot.data.documents[widget.index]['name'])),
+              Padding(
+                  padding: EdgeInsets.only(right: 30),
+                  child: SizedBox(
+                    width: 100,
+                    child: TextFormField(
+                      initialValue: snapshot.data.documents[widget.index]['cash'].toString(),
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+
+                    ),
+                  ))
+            ],
+          );
+        },
+      )),
     );
   }
 }
