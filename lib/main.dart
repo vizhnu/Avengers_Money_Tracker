@@ -71,6 +71,28 @@ class PersonCard extends StatefulWidget {
 
 class PersonCardState extends State<PersonCard> {
   int cash = 0;
+  String money ='';
+
+  var controller = TextEditingController();
+
+  @override
+  void dispose(){
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    String label = '';
+    StreamBuilder(
+        stream:  Firestore.instance.collection('cashtogive').snapshots(),
+        builder: (context, snapshot){
+        label = snapshot.data.documents[widget.index]['cash'].toString();
+        return null;
+    });
+    controller.text=label;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,21 +113,27 @@ class PersonCardState extends State<PersonCard> {
                   child: SizedBox(
                     width: 100,
                     child: TextFormField(
-                      initialValue: snapshot.data.documents[widget.index]['cash'].toString(),
+                      controller: controller,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       style: TextStyle(fontWeight: FontWeight.bold),
-                      onChanged:(text){
-                        Firestore.instance.runTransaction((transaction) async{
+                    ),
+                  )),
+              Padding(
+                padding: EdgeInsets.only(right: 30),
+                  child: RaisedButton(
+                child: Text('Refresh'),
+                color: Colors.orangeAccent,
+                onPressed: (){
+                          Firestore.instance.runTransaction((transaction) async{
                           DocumentSnapshot freshSnap =
                                 await transaction.get(snapshot.data.document.reference);
                            await transaction.update(freshSnap.reference,{
-                             'votes':int.parse(text),
+                             'cash':controller.text,
                            });
                         });
-                      },
-                    ),
-                  ))
+                },
+              ))
             ],
           );
         },
